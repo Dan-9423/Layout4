@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, Languages } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Logo } from '@/components/Logo';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,54 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib/utils';
 
 type AuthMode = 'login' | 'signup' | 'recovery';
+type Language = 'pt' | 'en';
+
+const translations = {
+  pt: {
+    welcome: 'Bem-vindo à nossa Plataforma',
+    secure: 'Segura, Rápida e Confiável',
+    welcomeBack: 'Bem-vindo de volta',
+    createAccount: 'Criar uma conta',
+    newToPlatform: 'Novo na plataforma?',
+    alreadyHaveAccount: 'Já possui uma conta?',
+    firstName: 'Nome',
+    lastName: 'Sobrenome',
+    email: 'E-mail',
+    password: 'Senha',
+    rememberMe: 'Lembrar-me',
+    forgotPassword: 'Esqueceu a senha?',
+    login: 'Entrar',
+    signup: 'Criar conta',
+    orContinueWith: 'Ou continue com',
+    passwordRecovery: 'Recuperação de Senha',
+    enterEmail: 'Digite seu e-mail para receber as instruções de recuperação',
+    sendInstructions: 'Enviar Instruções',
+    backToLogin: 'Voltar para o Login',
+    emailSuccess: 'E-mail enviado com sucesso! Verifique sua caixa de entrada.',
+  },
+  en: {
+    welcome: 'Welcome to our Platform',
+    secure: 'Secure, Fast and Reliable',
+    welcomeBack: 'Welcome Back',
+    createAccount: 'Create Account',
+    newToPlatform: 'New to platform?',
+    alreadyHaveAccount: 'Already have an account?',
+    firstName: 'First Name',
+    lastName: 'Last Name',
+    email: 'Email',
+    password: 'Password',
+    rememberMe: 'Remember me',
+    forgotPassword: 'Forgot password?',
+    login: 'Sign In',
+    signup: 'Sign Up',
+    orContinueWith: 'Or continue with',
+    passwordRecovery: 'Password Recovery',
+    enterEmail: 'Enter your email to receive recovery instructions',
+    sendInstructions: 'Send Instructions',
+    backToLogin: 'Back to Login',
+    emailSuccess: 'Email sent successfully! Check your inbox.',
+  }
+};
 
 export default function Auth() {
   const { login } = useAuth();
@@ -18,6 +66,9 @@ export default function Auth() {
   const [password, setPassword] = useState('');
   const [recoveryEmail, setRecoveryEmail] = useState('');
   const [recoverySuccess, setRecoverySuccess] = useState(false);
+  const [language, setLanguage] = useState<Language>('pt');
+
+  const t = translations[language];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,31 +79,44 @@ export default function Auth() {
 
   const handleRecovery = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simular envio de email de recuperação
     setRecoverySuccess(true);
+  };
+
+  const toggleLanguage = () => {
+    setLanguage(prev => prev === 'pt' ? 'en' : 'pt');
   };
 
   if (mode === 'recovery') {
     return (
       <div className="min-h-screen w-full flex items-center justify-center bg-[#111111] p-4">
         <div className="w-full max-w-md bg-[#1C1C1C] rounded-2xl shadow-2xl overflow-hidden p-8">
-          <div className="w-72 mx-auto mb-12">
-            <Logo />
+          <div className="flex justify-between items-center mb-12">
+            <div className="w-72">
+              <Logo />
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleLanguage}
+              className="text-gray-400 hover:text-gray-300"
+            >
+              <Languages className="h-5 w-5" />
+            </Button>
           </div>
 
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold text-gray-100">
-              Recuperação de Senha
+              {t.passwordRecovery}
             </h2>
             <p className="text-gray-400 mt-2">
-              Digite seu e-mail para receber as instruções de recuperação
+              {t.enterEmail}
             </p>
           </div>
 
           {recoverySuccess ? (
             <div className="text-center">
               <div className="bg-green-500/10 text-green-500 p-4 rounded-lg mb-6">
-                E-mail enviado com sucesso! Verifique sua caixa de entrada.
+                {t.emailSuccess}
               </div>
               <Button
                 onClick={() => {
@@ -61,13 +125,13 @@ export default function Auth() {
                 }}
                 className="w-full bg-blue-600 hover:bg-blue-700"
               >
-                Voltar para o Login
+                {t.backToLogin}
               </Button>
             </div>
           ) : (
             <form onSubmit={handleRecovery} className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="recovery-email" className="text-gray-300">E-mail</Label>
+                <Label htmlFor="recovery-email" className="text-gray-300">{t.email}</Label>
                 <Input
                   id="recovery-email"
                   type="email"
@@ -84,7 +148,7 @@ export default function Auth() {
                   type="submit"
                   className="w-full bg-blue-600 hover:bg-blue-700"
                 >
-                  Enviar Instruções
+                  {t.sendInstructions}
                 </Button>
                 <Button
                   type="button"
@@ -92,7 +156,7 @@ export default function Auth() {
                   className="w-full text-gray-400 hover:text-black hover:bg-white"
                   onClick={() => setMode('login')}
                 >
-                  Voltar para o Login
+                  {t.backToLogin}
                 </Button>
               </div>
             </form>
@@ -114,40 +178,50 @@ export default function Auth() {
             className="w-full h-full object-cover"
           />
           <div className="absolute bottom-0 left-0 right-0 p-8">
-            <h2 className="text-2xl font-bold text-white mb-2">Bem-vindo à nossa Plataforma</h2>
-            <p className="text-gray-200 text-sm">Segura, Rápida e Confiável</p>
+            <h2 className="text-2xl font-bold text-white mb-2">{t.welcome}</h2>
+            <p className="text-gray-200 text-sm">{t.secure}</p>
           </div>
         </div>
 
         {/* Right Side - Form */}
         <div className="w-full md:w-3/5 p-8">
-          <div className="w-72 mx-auto mb-12">
-            <Logo />
+          <div className="flex justify-between items-center mb-12">
+            <div className="w-72">
+              <Logo />
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleLanguage}
+              className="text-gray-400 hover:text-gray-300"
+            >
+              <Languages className="h-5 w-5" />
+            </Button>
           </div>
 
           <div className="text-center mb-8">
             <h2 className="text-2xl font-bold text-gray-100">
-              {mode === 'login' ? 'Bem-vindo de volta' : 'Criar uma conta'}
+              {mode === 'login' ? t.welcomeBack : t.createAccount}
             </h2>
             <p className="text-gray-400 mt-2">
               {mode === 'login' ? (
                 <>
-                  Novo na plataforma?{' '}
+                  {t.newToPlatform}{' '}
                   <button
                     onClick={() => setMode('signup')}
                     className="text-blue-400 hover:text-blue-300 font-medium"
                   >
-                    Criar uma conta
+                    {t.createAccount}
                   </button>
                 </>
               ) : (
                 <>
-                  Já possui uma conta?{' '}
+                  {t.alreadyHaveAccount}{' '}
                   <button
                     onClick={() => setMode('login')}
                     className="text-blue-400 hover:text-blue-300 font-medium"
                   >
-                    Entrar
+                    {t.login}
                   </button>
                 </>
               )}
@@ -158,7 +232,7 @@ export default function Auth() {
             {mode === 'signup' && (
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="firstName" className="text-gray-300">Nome</Label>
+                  <Label htmlFor="firstName" className="text-gray-300">{t.firstName}</Label>
                   <Input 
                     id="firstName" 
                     placeholder="João" 
@@ -166,7 +240,7 @@ export default function Auth() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="lastName" className="text-gray-300">Sobrenome</Label>
+                  <Label htmlFor="lastName" className="text-gray-300">{t.lastName}</Label>
                   <Input 
                     id="lastName" 
                     placeholder="Silva" 
@@ -177,7 +251,7 @@ export default function Auth() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-gray-300">E-mail</Label>
+              <Label htmlFor="email" className="text-gray-300">{t.email}</Label>
               <Input
                 id="email"
                 type="email"
@@ -189,7 +263,7 @@ export default function Auth() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-gray-300">Senha</Label>
+              <Label htmlFor="password" className="text-gray-300">{t.password}</Label>
               <div className="relative">
                 <Input
                   id="password"
@@ -220,7 +294,7 @@ export default function Auth() {
                   htmlFor="remember"
                   className="text-sm font-medium text-gray-300"
                 >
-                  Lembrar-me
+                  {t.rememberMe}
                 </label>
               </div>
               {mode === 'login' && (
@@ -230,7 +304,7 @@ export default function Auth() {
                   className="text-blue-400 hover:text-blue-300 px-0"
                   onClick={() => setMode('recovery')}
                 >
-                  Esqueceu a senha?
+                  {t.forgotPassword}
                 </Button>
               )}
             </div>
@@ -244,7 +318,7 @@ export default function Auth() {
                 "transition-colors duration-200"
               )}
             >
-              {mode === 'login' ? 'Entrar' : 'Criar conta'}
+              {mode === 'login' ? t.login : t.signup}
             </Button>
 
             <div className="relative">
@@ -253,7 +327,7 @@ export default function Auth() {
               </div>
               <div className="relative flex justify-center text-sm">
                 <span className="px-2 bg-[#1C1C1C] text-gray-400">
-                  Ou continue com
+                  {t.orContinueWith}
                 </span>
               </div>
             </div>
