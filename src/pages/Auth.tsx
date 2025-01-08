@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib/utils';
 
-type AuthMode = 'login' | 'signup';
+type AuthMode = 'login' | 'signup' | 'recovery';
 
 export default function Auth() {
   const { login } = useAuth();
@@ -16,6 +16,8 @@ export default function Auth() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [recoveryEmail, setRecoveryEmail] = useState('');
+  const [recoverySuccess, setRecoverySuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,6 +25,82 @@ export default function Auth() {
       await login(email, password);
     }
   };
+
+  const handleRecovery = async (e: React.FormEvent) => {
+    e.preventDefault();
+    // Simular envio de email de recuperação
+    setRecoverySuccess(true);
+  };
+
+  if (mode === 'recovery') {
+    return (
+      <div className="min-h-screen w-full flex items-center justify-center bg-[#111111] p-4">
+        <div className="w-full max-w-md bg-[#1C1C1C] rounded-2xl shadow-2xl overflow-hidden p-8">
+          <div className="w-72 mx-auto mb-12">
+            <Logo />
+          </div>
+
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold text-gray-100">
+              Recuperação de Senha
+            </h2>
+            <p className="text-gray-400 mt-2">
+              Digite seu e-mail para receber as instruções de recuperação
+            </p>
+          </div>
+
+          {recoverySuccess ? (
+            <div className="text-center">
+              <div className="bg-green-500/10 text-green-500 p-4 rounded-lg mb-6">
+                E-mail enviado com sucesso! Verifique sua caixa de entrada.
+              </div>
+              <Button
+                onClick={() => {
+                  setMode('login');
+                  setRecoverySuccess(false);
+                }}
+                className="w-full bg-blue-600 hover:bg-blue-700"
+              >
+                Voltar para o Login
+              </Button>
+            </div>
+          ) : (
+            <form onSubmit={handleRecovery} className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="recovery-email" className="text-gray-300">E-mail</Label>
+                <Input
+                  id="recovery-email"
+                  type="email"
+                  value={recoveryEmail}
+                  onChange={(e) => setRecoveryEmail(e.target.value)}
+                  placeholder="seu@email.com"
+                  className="bg-[#2C2C2C] border-gray-700 text-gray-100 placeholder:text-gray-500"
+                  required
+                />
+              </div>
+
+              <div className="space-y-4">
+                <Button
+                  type="submit"
+                  className="w-full bg-blue-600 hover:bg-blue-700"
+                >
+                  Enviar Instruções
+                </Button>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="w-full text-gray-400 hover:text-black hover:bg-white"
+                  onClick={() => setMode('login')}
+                >
+                  Voltar para o Login
+                </Button>
+              </div>
+            </form>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[#111111] p-4">
@@ -147,8 +225,10 @@ export default function Auth() {
               </div>
               {mode === 'login' && (
                 <Button
+                  type="button"
                   variant="link"
                   className="text-blue-400 hover:text-blue-300 px-0"
+                  onClick={() => setMode('recovery')}
                 >
                   Esqueceu a senha?
                 </Button>
@@ -207,13 +287,10 @@ export default function Auth() {
                 variant="outline"
                 className="w-full bg-[#2C2C2C] border-gray-700 hover:bg-[#3C3C3C] text-gray-300"
               >
-                <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
-                  <path
-                    d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
-                    fill="currentColor"
-                  />
+                <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/>
                 </svg>
-                Facebook
+                Apple
               </Button>
             </div>
           </form>
