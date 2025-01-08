@@ -3,7 +3,8 @@ import ThemeToggle from './ThemeToggle';
 import UserProfile from './UserProfile';
 import { Calculator } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useUser } from '@/contexts/UserContext';
 import CalculatorComponent from '../Calculator';
 import {
   Dialog,
@@ -14,11 +15,29 @@ import {
 
 export default function TopBanner() {
   const [isOpen, setIsOpen] = useState(false);
+  const [greeting, setGreeting] = useState('');
+  const { user } = useUser();
+
+  useEffect(() => {
+    const hour = new Date().getHours();
+    let greetingText = '';
+    
+    if (hour >= 5 && hour < 12) {
+      greetingText = 'Bom dia';
+    } else if (hour >= 12 && hour < 18) {
+      greetingText = 'Boa tarde';
+    } else {
+      greetingText = 'Boa noite';
+    }
+
+    const genderSuffix = user.gender === 'female' ? 'vinda' : 'vindo';
+    setGreeting(`${greetingText}, ${user.firstName}! Seja bem ${genderSuffix} novamente.`);
+  }, [user.firstName, user.gender]);
 
   return (
     <div className="bg-white dark:bg-[#1C1C1C] rounded-lg shadow-lg dark:shadow-[#000000]/10 p-4 mb-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Dashboard</h2>
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">{greeting}</h2>
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="icon" onClick={() => setIsOpen(true)}>
             <Calculator className="h-5 w-5" />

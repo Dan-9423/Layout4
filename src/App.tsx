@@ -1,14 +1,29 @@
 import { ThemeProvider } from './components/ThemeProvider';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { UserProvider } from './contexts/UserContext';
+import { AuthProvider } from './contexts/AuthContext';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { useAuth } from './contexts/AuthContext';
 import Sidebar from './components/Sidebar';
 import TopBanner from './components/TopBanner';
 import DashboardNav from './components/DashboardNav';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
+import Auth from './pages/Auth';
+
+function RequireAuth({ children }: { children: JSX.Element }) {
+  const { isAuthenticated } = useAuth();
+  const location = useLocation();
+
+  if (!isAuthenticated) {
+    return <Navigate to="/auth" state={{ from: location }} replace />;
+  }
+
+  return children;
+}
 
 function AppContent() {
   const location = useLocation();
-  const showDashboardNav = location.pathname !== '/profile';
+  const showDashboardNav = !['/profile', '/', '/settings'].includes(location.pathname);
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-[#111111]">
@@ -27,14 +42,26 @@ function AppContent() {
   );
 }
 
-function App() {
+export default function App() {
   return (
     <Router>
       <ThemeProvider>
-        <AppContent />
+        <AuthProvider>
+          <UserProvider>
+            <Routes>
+              <Route path="/auth" element={<Auth />} />
+              <Route
+                path="/*"
+                element={
+                  <RequireAuth>
+                    <AppContent />
+                  </RequireAuth>
+                }
+              />
+            </Routes>
+          </UserProvider>
+        </AuthProvider>
       </ThemeProvider>
     </Router>
   );
 }
-
-export default App;
