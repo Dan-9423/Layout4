@@ -91,9 +91,6 @@ export default function Auth() {
       <div className="min-h-screen w-full flex items-center justify-center bg-[#111111] p-4">
         <div className="w-full max-w-md bg-[#1C1C1C] rounded-2xl shadow-2xl overflow-hidden p-8">
           <div className="flex justify-between items-center mb-12">
-            <div className="w-72">
-              <Logo />
-            </div>
             <Button
               variant="ghost"
               size="icon"
@@ -102,6 +99,10 @@ export default function Auth() {
             >
               <Languages className="h-5 w-5" />
             </Button>
+            <div className="w-72 mx-auto">
+              <Logo />
+            </div>
+            <div className="w-10" /> {/* Spacer to balance the layout */}
           </div>
 
           <div className="text-center mb-8">
@@ -186,9 +187,6 @@ export default function Auth() {
         {/* Right Side - Form */}
         <div className="w-full md:w-3/5 p-8">
           <div className="flex justify-between items-center mb-12">
-            <div className="w-72">
-              <Logo />
-            </div>
             <Button
               variant="ghost"
               size="icon"
@@ -197,6 +195,10 @@ export default function Auth() {
             >
               <Languages className="h-5 w-5" />
             </Button>
+            <div className="w-72 mx-auto">
+              <Logo />
+            </div>
+            <div className="w-10" /> {/* Spacer to balance the layout */}
           </div>
 
           <div className="text-center mb-8">
