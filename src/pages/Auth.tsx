@@ -33,7 +33,7 @@ const translations = {
     sendInstructions: 'Enviar Instruções',
     backToLogin: 'Voltar para o Login',
     emailSuccess: 'E-mail enviado com sucesso! Verifique sua caixa de entrada.',
-    changeLanguage: 'Want to change language?' // Em português, texto em inglês
+    changeLanguage: 'Want to change language?'
   },
   en: {
     welcome: 'Welcome to our Platform',
@@ -56,7 +56,7 @@ const translations = {
     sendInstructions: 'Send Instructions',
     backToLogin: 'Back to Login',
     emailSuccess: 'Email sent successfully! Check your inbox.',
-    changeLanguage: 'Quer trocar de idioma?' // In English, text in Portuguese
+    changeLanguage: 'Quer trocar de idioma?'
   }
 };
 
@@ -209,8 +209,8 @@ export default function Auth() {
               )}
             </p>
             
-            {/* New Language Toggle Position */}
-            <div className="flex items-center justify-center gap-2 mt-4 text-sm text-gray-400">
+            {/* Language Toggle with adjusted spacing */}
+            <div className="flex items-center justify-center gap-2 mt-2 text-sm text-gray-400">
               <span>{t.changeLanguage}</span>
               <Button
                 variant="ghost"
