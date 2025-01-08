@@ -43,7 +43,7 @@ export default function Auth() {
 
         {/* Right Side - Form */}
         <div className="w-full md:w-3/5 p-8">
-          <div className="w-48 mx-auto mb-8">
+          <div className="w-72 mx-auto mb-12">
             <Logo />
           </div>
 

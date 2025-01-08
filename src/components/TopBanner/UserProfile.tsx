@@ -1,6 +1,7 @@
 import { LogOut, Settings, User, ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '@/contexts/UserContext';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,6 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 export default function UserProfile() {
   const navigate = useNavigate();
   const { user } = useUser();
+  const { logout } = useAuth();
 
   return (
     <DropdownMenu>
@@ -39,7 +41,7 @@ export default function UserProfile() {
           <Settings className="mr-2 h-4 w-4" />
           <span>Configurações</span>
         </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer text-red-600 dark:text-red-400">
+        <DropdownMenuItem className="cursor-pointer text-red-600 dark:text-red-400" onClick={logout}>
           <LogOut className="mr-2 h-4 w-4" />
           <span>Sair</span>
         </DropdownMenuItem>

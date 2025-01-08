@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Link, useLocation } from 'react-router-dom';
 import { Logo } from './Logo';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   Tooltip,
   TooltipContent,
@@ -25,6 +26,7 @@ interface MenuItem {
 
 export default function Sidebar() {
   const location = useLocation();
+  const { logout } = useAuth();
   const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(true);
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -259,6 +261,7 @@ export default function Sidebar() {
                   "w-full flex items-center justify-center gap-2 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/10",
                   !isExpanded && "px-0"
                 )}
+                onClick={logout}
               >
                 <LogOut className="h-4 w-4" />
                 {isExpanded && "Logout"}
