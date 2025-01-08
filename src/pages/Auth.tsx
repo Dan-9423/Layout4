@@ -33,6 +33,7 @@ const translations = {
     sendInstructions: 'Enviar Instruções',
     backToLogin: 'Voltar para o Login',
     emailSuccess: 'E-mail enviado com sucesso! Verifique sua caixa de entrada.',
+    changeLanguage: 'Want to change language?' // Em português, texto em inglês
   },
   en: {
     welcome: 'Welcome to our Platform',
@@ -55,6 +56,7 @@ const translations = {
     sendInstructions: 'Send Instructions',
     backToLogin: 'Back to Login',
     emailSuccess: 'Email sent successfully! Check your inbox.',
+    changeLanguage: 'Quer trocar de idioma?' // In English, text in Portuguese
   }
 };
 
@@ -90,19 +92,8 @@ export default function Auth() {
     return (
       <div className="min-h-screen w-full flex items-center justify-center bg-[#111111] p-4">
         <div className="w-full max-w-md bg-[#1C1C1C] rounded-2xl shadow-2xl overflow-hidden p-8">
-          <div className="flex justify-between items-center mb-12">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleLanguage}
-              className="text-gray-400 hover:text-gray-300"
-            >
-              <Languages className="h-5 w-5" />
-            </Button>
-            <div className="w-72 mx-auto">
-              <Logo />
-            </div>
-            <div className="w-10" /> {/* Spacer to balance the layout */}
+          <div className="w-72 mx-auto mb-12">
+            <Logo />
           </div>
 
           <div className="text-center mb-8">
@@ -186,19 +177,8 @@ export default function Auth() {
 
         {/* Right Side - Form */}
         <div className="w-full md:w-3/5 p-8">
-          <div className="flex justify-between items-center mb-12">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleLanguage}
-              className="text-gray-400 hover:text-gray-300"
-            >
-              <Languages className="h-5 w-5" />
-            </Button>
-            <div className="w-72 mx-auto">
-              <Logo />
-            </div>
-            <div className="w-10" /> {/* Spacer to balance the layout */}
+          <div className="w-72 mx-auto mb-12">
+            <Logo />
           </div>
 
           <div className="text-center mb-8">
@@ -228,6 +208,19 @@ export default function Auth() {
                 </>
               )}
             </p>
+            
+            {/* New Language Toggle Position */}
+            <div className="flex items-center justify-center gap-2 mt-4 text-sm text-gray-400">
+              <span>{t.changeLanguage}</span>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleLanguage}
+                className="text-gray-400 hover:text-gray-300"
+              >
+                <Languages className="h-5 w-5" />
+              </Button>
+            </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
